@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { Coffee, Instagram, Facebook, Twitter, Send, CheckCircle2, Heart } from 'lucide-react';
+import { Coffee, Instagram, Facebook, Twitter, Send, CheckCircle2, Heart, ShieldCheck, Lock } from 'lucide-react';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onOpenAdmin?: () => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onOpenAdmin }) => {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [newsletterError, setNewsletterError] = useState('');
@@ -114,6 +118,17 @@ export const Footer: React.FC = () => {
                   </a>
                 </li>
               ))}
+              {/* Admin Sign Up / Login Link */}
+              <li className="pt-2 border-t border-[#2A2A2A]">
+                <button
+                  type="button"
+                  onClick={onOpenAdmin}
+                  className="text-[#F4C430] hover:text-white transition-colors flex items-center gap-1.5 font-semibold cursor-pointer group"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#D2691E] group-hover:scale-110 transition-transform" />
+                  <span>Admin Sign Up & Login</span>
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -166,10 +181,22 @@ export const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#666666] gap-4">
           <p>© 2026 Gazebo Cafe. All Rights Reserved.</p>
-          <div className="flex items-center gap-1 text-[11px]">
-            <span>Crafted with</span>
-            <Heart className="w-3 h-3 text-[#B22222] fill-[#B22222]" />
-            <span>for coffee lovers everywhere</span>
+          
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={onOpenAdmin}
+              className="px-3 py-1.5 rounded-lg bg-[#1A1A1A] border border-[#3A3A3A] hover:border-[#D2691E] text-[#D2691E] hover:text-[#F4C430] font-semibold text-[11px] flex items-center gap-1.5 transition-all cursor-pointer"
+            >
+              <Lock className="w-3 h-3 text-[#D2691E]" />
+              <span>Admin Portal (Sign Up / Login)</span>
+            </button>
+
+            <div className="flex items-center gap-1 text-[11px]">
+              <span>Crafted with</span>
+              <Heart className="w-3 h-3 text-[#B22222] fill-[#B22222]" />
+              <span>for coffee lovers everywhere</span>
+            </div>
           </div>
         </div>
 

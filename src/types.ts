@@ -47,3 +47,27 @@ export interface OpeningHour {
   hours: string;
   isToday?: boolean;
 }
+
+export interface AdminAccount {
+  id: string;
+  email: string;
+  fullName: string;
+  created_at: string;
+}
+
+export interface BookingRecord {
+  id?: string;
+  booking_ref: string;
+  full_name: string;
+  email: string;
+  phone: string;
+  guests: number;
+  booking_date: string;
+  booking_time: string;
+  order_type: string;
+  pre_selected_items?: string[] | string | null;
+  special_requests?: string | null;
+  pre_order_total?: number;
+  status: 'confirmed' | 'pending' | 'seated' | 'cancelled';
+  created_at: string;
+}

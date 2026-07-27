@@ -9,9 +9,11 @@ import { Testimonials } from './components/Testimonials';
 import { HoursAndLocation } from './components/HoursAndLocation';
 import { Footer } from './components/Footer';
 import { ScrollToTop } from './components/ScrollToTop';
+import { AdminPanel } from './components/AdminPanel';
 
 export default function App() {
   const [selectedPreOrderIds, setSelectedPreOrderIds] = useState<string[]>([]);
+  const [isAdminOpen, setIsAdminOpen] = useState<boolean>(false);
 
   const handleTogglePreOrderItem = (itemId: string) => {
     setSelectedPreOrderIds((prev) =>
@@ -70,11 +72,17 @@ export default function App() {
         <HoursAndLocation />
       </main>
 
-      {/* Footer */}
-      <Footer />
+      {/* Footer with Admin Link */}
+      <Footer onOpenAdmin={() => setIsAdminOpen(true)} />
 
       {/* Floating Scroll To Top Button */}
       <ScrollToTop />
+
+      {/* Master Admin Panel Modal */}
+      <AdminPanel
+        isOpen={isAdminOpen}
+        onClose={() => setIsAdminOpen(false)}
+      />
     </div>
   );
 }

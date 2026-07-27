@@ -1,0 +1,6 @@
+{
+  "name": "Gazebo Cafe",
+  "description": "A complete, modern, warm, and responsive single-page application for Gazebo Cafe with menu, online table booking, gallery, reviews, and hours.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

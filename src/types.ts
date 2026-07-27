@@ -70,4 +70,79 @@ export interface BookingRecord {
   pre_order_total?: number;
   status: 'confirmed' | 'pending' | 'seated' | 'cancelled';
   created_at: string;
+  table_number?: string;
 }
+
+// Table Management System (TMS) Types
+export type TableSection = 'Main Gazebo Floor' | 'Patio Terrace' | 'Garden Gazebo' | 'Bar Lounge';
+export type TableStatus = 'available' | 'reserved' | 'occupied' | 'cleaning';
+
+export interface RestaurantTable {
+  id: string;
+  table_number: string;
+  section: TableSection;
+  capacity: number;
+  status: TableStatus;
+  current_booking_ref?: string;
+  current_customer_name?: string;
+  assigned_waiter_id?: string;
+  assigned_waiter_name?: string;
+  seated_at?: string; // ISO string timestamp
+  guests_count?: number;
+}
+
+// Kitchen Display System (KDS) Types
+export type KitchenStation = 'Coffee & Beverage Bar' | 'Hot Kitchen' | 'Bakery & Pastry' | 'Cold Pantry';
+export type TicketItemStatus = 'pending' | 'preparing' | 'ready';
+export type KitchenTicketStatus = 'new' | 'preparing' | 'ready' | 'served';
+
+export interface KitchenTicketItem {
+  id: string;
+  name: string;
+  quantity: number;
+  station: KitchenStation;
+  status: TicketItemStatus;
+  notes?: string;
+}
+
+export interface KitchenTicket {
+  id: string;
+  ticket_number: string;
+  booking_ref?: string;
+  table_number: string;
+  order_type: 'Dine-in' | 'Takeaway' | 'Delivery';
+  customer_name: string;
+  waiter_name?: string;
+  items: KitchenTicketItem[];
+  status: KitchenTicketStatus;
+  created_at: string; // ISO string
+  priority?: 'normal' | 'high' | 'vip';
+}
+
+// Waiter & Server Management Types
+export type WaiterRole = 'Head Waiter' | 'Floor Server' | 'Barista' | 'Food Runner';
+export type WaiterStatus = 'active' | 'on_break' | 'off_shift';
+
+export interface TableServiceCall {
+  id: string;
+  table_number: string;
+  customer_name?: string;
+  request_type: 'Water Refill' | 'Bill Request' | 'Order Assistance' | 'Clearing Table' | 'Special Request';
+  created_at: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  assigned_waiter_id?: string;
+}
+
+export interface WaiterStaff {
+  id: string;
+  name: string;
+  role: WaiterRole;
+  phone: string;
+  status: WaiterStatus;
+  assigned_section: TableSection;
+  assigned_tables: string[]; // e.g. ['T-1', 'T-2', 'T-3']
+  active_tables_count: number;
+  completed_orders_today: number;
+  avatar_color: string;
+}
+

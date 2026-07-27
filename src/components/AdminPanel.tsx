@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { BookingRecord } from '../types';
+import { KDSView } from './KDSView';
+import { TMSView } from './TMSView';
+import { WaiterManagementView } from './WaiterManagementView';
 import { 
   ShieldCheck, 
   Lock, 
@@ -28,7 +31,9 @@ import {
   X, 
   ChevronRight,
   TrendingUp,
-  UserCheck
+  UserCheck,
+  Flame,
+  Grid
 } from 'lucide-react';
 
 interface AdminPanelProps {
@@ -67,7 +72,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
   const [statusFilter, setStatusFilter] = useState<'all' | 'confirmed' | 'seated' | 'pending' | 'cancelled'>('all');
   const [dateFilter, setDateFilter] = useState<string>('');
 
-  // Modals
+  // Modals & Navigation
+  const [activeConsoleTab, setActiveConsoleTab] = useState<'RESERVATIONS' | 'KDS' | 'TMS' | 'WAITERS'>('RESERVATIONS');
   const [selectedBooking, setSelectedBooking] = useState<BookingRecord | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [showSqlModal, setShowSqlModal] = useState(false);
@@ -704,7 +710,67 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
             /* ------------------------------------------------------------- */
             <div className="space-y-6">
 
-              {/* Key Metrics Stats Bar */}
+              {/* Master Console Navigation Bar */}
+              <div className="bg-[#121212] p-1.5 rounded-2xl border border-[#2A2A2A] flex flex-wrap items-center justify-between gap-2">
+                <div className="flex flex-wrap items-center gap-1 w-full sm:w-auto">
+                  <button
+                    onClick={() => setActiveConsoleTab('RESERVATIONS')}
+                    className={`flex-1 sm:flex-initial px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                      activeConsoleTab === 'RESERVATIONS'
+                        ? 'bg-gradient-btn text-white shadow-md'
+                        : 'text-[#AAAAAA] hover:text-white hover:bg-[#1E1E1E]'
+                    }`}
+                  >
+                    <Calendar className="w-4 h-4" />
+                    <span>Bookings & Reservations</span>
+                  </button>
+
+                  <button
+                    onClick={() => setActiveConsoleTab('KDS')}
+                    className={`flex-1 sm:flex-initial px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                      activeConsoleTab === 'KDS'
+                        ? 'bg-gradient-btn text-white shadow-md'
+                        : 'text-[#AAAAAA] hover:text-white hover:bg-[#1E1E1E]'
+                    }`}
+                  >
+                    <Flame className="w-4 h-4 text-[#F4C430]" />
+                    <span>Kitchen Display (KDS)</span>
+                  </button>
+
+                  <button
+                    onClick={() => setActiveConsoleTab('TMS')}
+                    className={`flex-1 sm:flex-initial px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                      activeConsoleTab === 'TMS'
+                        ? 'bg-gradient-btn text-white shadow-md'
+                        : 'text-[#AAAAAA] hover:text-white hover:bg-[#1E1E1E]'
+                    }`}
+                  >
+                    <Grid className="w-4 h-4 text-blue-400" />
+                    <span>Table Management (TMS)</span>
+                  </button>
+
+                  <button
+                    onClick={() => setActiveConsoleTab('WAITERS')}
+                    className={`flex-1 sm:flex-initial px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                      activeConsoleTab === 'WAITERS'
+                        ? 'bg-gradient-btn text-white shadow-md'
+                        : 'text-[#AAAAAA] hover:text-white hover:bg-[#1E1E1E]'
+                    }`}
+                  >
+                    <Users className="w-4 h-4 text-emerald-400" />
+                    <span>Waiter Management</span>
+                  </button>
+                </div>
+
+                <div className="text-[11px] text-[#888888] px-3 py-1 bg-[#1A1A1A] rounded-xl border border-[#2A2A2A] hidden xl:block">
+                  System Status: <span className="text-emerald-400 font-bold">● All Systems Operational</span>
+                </div>
+              </div>
+
+              {/* 1. RESERVATIONS & BOOKINGS TAB */}
+              {activeConsoleTab === 'RESERVATIONS' && (
+                <>
+                  {/* Key Metrics Stats Bar */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 
                 <div className="bg-[#121212] p-4 rounded-2xl border border-[#2A2A2A] flex items-center gap-3">
@@ -949,6 +1015,17 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                   </table>
                 </div>
               </div>
+                </>
+              )}
+
+              {/* 2. KITCHEN DISPLAY SYSTEM (KDS) TAB */}
+              {activeConsoleTab === 'KDS' && <KDSView />}
+
+              {/* 3. TABLE MANAGEMENT SYSTEM (TMS) TAB */}
+              {activeConsoleTab === 'TMS' && <TMSView bookings={bookings} />}
+
+              {/* 4. WAITER MANAGEMENT TAB */}
+              {activeConsoleTab === 'WAITERS' && <WaiterManagementView />}
 
             </div>
           )}
